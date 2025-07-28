@@ -128,6 +128,10 @@ def JDK_IMPLS = params.JDK_IMPL.trim().split("\\s*,\\s*");
 
 def CLOUD_PROVIDER = params.CLOUD_PROVIDER ?: ""
 
+echo "Hello from the pipeline!"
+
+echo "CLOUD_PROVIDER is: ${CLOUD_PROVIDER}"
+
 // if multiple JDK_VERSION / JDK_IMPL / PLATFORM are provided, run test jobs in parallel
 timestamps{
     if (JDK_VERSIONS.size() > 1 || JDK_IMPLS.size() > 1 || PLATFORMS.size() >1 || PLATFORMS.any { it.contains("all") }) {
@@ -505,7 +509,7 @@ def runTest() {
             def gitConfig = scm.getUserRemoteConfigs().get(0)
 
             // Adopt windows machines require env here https://github.com/adoptium/aqa-tests/issues/1803
-            ref_cache = "${env.HOME}/openjdk_cache"
+            def ref_cache = "${env.HOME}/openjdk_cache"
 
             retry(5) {
                 if (retry_count > 0) {
